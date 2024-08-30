@@ -11,31 +11,21 @@
  * @return {ListNode}
  */
 var addTwoNumbers = function(l1, l2) {
-    let ans = new ListNode (0);
-    let head = ans;
-    let sum =0;
-    let carry = 0;
-
-    while(l1 !== null || l2 !== null || sum !== 0){
-        if(l1 !== null){
-            sum += l1.val;
-            l1 = l1.next;
-        }
-
-        if(l2 !== null){
-            sum += l2.val;
-            l2 = l2.next;
-        }
-
-        if(sum >= 10){
-        carry = 1;
-        sum = sum - 10;
-        }
-
-        head.next = new ListNode (sum);
-        head = head.next;
-        sum = carry;
-        carry = 0;
+    let sum = BigInt(recursivelySumList(l1)) + BigInt(recursivelySumList(l2));
+    sum += '';
+    return new ListNode(BigInt(sum[sum.length-1]),recursivelyBuildNode(sum,sum.length-1),10);
+};
+var recursivelySumList = function(l1){
+    if (l1.next){
+        return recursivelySumList(l1.next)+''+l1.val;
+    } else {
+        return l1.val;
     }
-    return ans.next;
+};
+var recursivelyBuildNode = function(l1,index){
+    if (index > 0){
+        index--;
+        return new ListNode(l1[index],recursivelyBuildNode(l1,index));
+    }
+    return undefined;
 };
